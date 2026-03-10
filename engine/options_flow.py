@@ -1,42 +1,44 @@
 import pandas as pd
 import numpy as np
 
+
 def generate_options_flow(symbol):
 
-    data = []
+    strikes = [300,320,340,360,380,400,420]
 
-    strikes = [350,360,370,380,390,400]
+    rows = []
 
     for strike in strikes:
 
-        size = np.random.randint(100,2000)
-
-        premium = size * np.random.uniform(1,5) * 100
-
+        option_type = np.random.choice(["CALL","PUT"])
         side = np.random.choice(["BUY","SELL"])
 
-        option_type = np.random.choice(["CALL","PUT"])
+        size = np.random.randint(100,2000)
 
-        if option_type=="CALL" and side=="BUY":
-            signal="Bullish"
+        premium = size * np.random.uniform(1.5,6) * 100
 
-        elif option_type=="PUT" and side=="BUY":
-            signal="Bearish"
+        if option_type == "CALL" and side == "BUY":
+            signal = "Bullish"
+
+        elif option_type == "PUT" and side == "BUY":
+            signal = "Bearish"
 
         else:
-            signal="Neutral"
+            signal = "Neutral"
 
-        score = np.random.uniform(5,10)
+        score = round(np.random.uniform(5,10),2)
 
-        data.append({
-            "symbol":symbol,
-            "strike":strike,
-            "type":option_type,
-            "side":side,
-            "size":size,
-            "premium":round(premium,2),
-            "signal":signal,
-            "score":round(score,2)
+        rows.append({
+            "Symbol": symbol,
+            "Strike": strike,
+            "Type": option_type,
+            "Side": side,
+            "Contracts": size,
+            "Premium": round(premium,2),
+            "Signal": signal,
+            "Score": score
         })
 
-    return pd.DataFrame(data)
+    df = pd.DataFrame(rows)
+
+    return df
